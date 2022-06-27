@@ -1,0 +1,92 @@
+<snippet>
+	<content><![CDATA[
+/*
+low[u] = what is the lowest ancestor that can be reached directly from that node
+disc[u] = discovery time of u
+dfsBR(u,p) -> p = parent of 
+br[{u,v}] = pairs of birdges
+*/
+
+const ll N=705;
+
+vll graph[N];
+ll low[N], disc[N];
+vector<pll> br;
+ll dTime;
+ll n,m;
+
+ll dfsBR(ll u, ll p)
+{
+    ll children=0;
+    low[u]=disc[u]=++dTime;
+
+    for(auto v: graph[u])
+    {
+        if(v==p)
+        {
+            continue;
+        }
+
+        if(!disc[v])
+        {
+            children++;
+            dfsBR(v,u);
+
+            if(disc[u]<low[v])
+            {
+                br.pb({min(u,v),max(u,v)});
+            }
+
+            low[u]=min(low[u],low[v]);
+        }
+        else
+        {
+            low[u]=min(low[u],disc[v]);
+        }
+    }
+
+    return children;
+}
+
+void solve()
+{
+    cin>>n>>m;
+
+    for(ll i=0; i<n; i++)
+    {
+        graph[i].clear();
+    }
+
+    for(ll i=0; i<m; i++)
+    {
+        ll u,v; cin>>u>>v;
+        u--,v--;
+        graph[u].pb(v);
+        graph[v].pb(u);
+    }
+
+    dTime=0;
+    memo(disc,0);
+    br.clear();
+
+    for(ll u=0; u<n; u++)
+    {
+        if(!disc[u])
+        {
+            dfsBR(u,u);
+        }
+    }
+
+    cout<<sz(br)<<endl;
+
+    for(auto x: br)
+    {
+        cout<<x.ff<<" "<<x.ss<<endl;
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>Bridges</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

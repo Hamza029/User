@@ -1,0 +1,81 @@
+<snippet>
+	<content><![CDATA[
+vector<ll> graph[$1];
+vector<ll> transposedGraph[$1];
+vector<ll> components[$1];
+bool vis[$1];
+stack<ll> order;
+ll nodes,edges;
+
+void dfs(ll u)
+{
+    vis[u]=1;
+    for(auto v: graph[u])
+    {
+        if(!vis[v])
+        {
+            dfs(v);
+        }
+    }
+    order.push(u);
+}
+
+void dfs2(ll u, ll mark)
+{
+    components[mark].push_back(u);
+    vis[u]=1;
+    for(auto v: transposedGraph[u])
+    {
+        if(!vis[v])
+        {
+            dfs2(v,mark);
+        }
+    }
+}
+
+void findSCC()
+{
+    cin>>nodes>>edges;
+    for(ll i=0; i<edges; i++)
+    {
+        ll u,v; cin>>u>>v;
+        graph[u].push_back(v);
+        transposedGraph[v].push_back(u);
+    }
+    memset(vis,0,sizeof(vis));
+    for(ll i=1; i<=nodes; i++)
+    {
+        if(!vis[i])
+        {
+            dfs(i);
+        }
+    }
+    memset(vis,0,sizeof(vis));
+    ll sccNum=0;
+    while(!order.empty())
+    {
+        ll top=order.top();
+        order.pop();
+        if(!vis[top])
+        {
+            dfs2(top,sccNum);
+            sccNum++;
+        }
+    }
+    cout<<"Number of SCC: "<<sccNum<<endl;
+    // all the SCCs will be stored in components[] vector
+    for(ll i=0; i<sccNum; i++)
+    {
+        for(auto x: components[i])
+        {
+            cout<<x<<" ";
+        }
+        cout<<endl;
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>StronglyConnectedComponents</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

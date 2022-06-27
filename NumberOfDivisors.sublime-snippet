@@ -1,0 +1,29 @@
+<snippet>
+	<content><![CDATA[
+// for prime factorization of N, store prime numbers upto sqrt(N) inclusive
+// len = primes.size()
+ll NOD(ll n)
+{
+    ll nod=1;
+    for(ll i=0; primes[i]*primes[i]<=n && i<len; i++)
+    {
+        if(n%primes[i]==0)
+        {
+            ll cnt=0;
+            while(n%primes[i]==0)
+            {
+                n/=primes[i];
+                cnt++;
+            }
+            nod*=(cnt+1);
+        }
+    }
+    if(n>1) nod*=2;
+    return nod;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>NumberOfDivisors</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

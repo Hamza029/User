@@ -1,0 +1,36 @@
+<snippet>
+	<content><![CDATA[
+vector<int> graph[$1];
+bool vis[$1];
+int level[$1];
+int parent[$1];
+int nodes,edges;
+
+void bfs(int u)
+{
+    queue<int> q;
+    q.push(u);
+    vis[u]=1;
+    level[u]=0;
+    while(!q.empty())
+    {
+        u=q.front();
+        q.pop();
+        for(auto v: graph[u])
+        {
+            if(!vis[v])
+            {
+                vis[v]=1;
+                level[v]=level[u]+1;
+                parent[v]=u;
+                q.push(v);
+            }
+        }
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>bfs</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

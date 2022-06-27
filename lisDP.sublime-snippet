@@ -1,0 +1,44 @@
+<snippet>
+	<content><![CDATA[
+const ll N=10005;
+
+ll ara[N];
+ll dp[N]; // dp[i] = maximum length of LIS when the last element of LIS is ith element
+ll n;
+
+ll F(ll i, ll j) // ll i = current index, j = previous index
+{
+    if(i>n)
+    {
+        return 0;
+    }
+    if(dp[j]!=-1)
+    {
+        return dp[j];
+    }
+    ll maxx=0;
+    if(ara[i]>ara[j])
+    {
+        maxx=max(maxx,F(i+1,i)+1);
+    }
+    maxx=max(maxx,F(i+1,j));
+    return dp[j]=maxx;
+}
+
+void solve()
+{
+    cin>>n;
+    for(ll i=1; i<=n; i++)
+    {
+        cin>>ara[i];
+    }
+    memset(dp,-1,sizeof(dp));
+    ara[0]=-1;
+    cout<<F(1,0)<<endl;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>LIS</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

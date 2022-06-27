@@ -1,0 +1,48 @@
+<snippet>
+	<content><![CDATA[
+// Dijkstra's algorithm (operator overloading)
+// initially set dis to inf
+
+struct edge
+{
+    ll node;
+    ll cost;
+    bool operator < (const edge& p) const
+    {
+        return cost > p.cost;
+    }
+};
+
+vector<edge> graph[$1+5];
+ll dis[$1+5];
+ll n,m;
+
+void dij(ll u)
+{
+    for(ll i=1; i<=n; i++)
+    {
+        dis[i]=inf;
+    }
+    dis[u]=0;
+    priority_queue<edge> q;
+    q.push({u,0});
+    while(!q.empty())
+    {
+        u=q.top().node;
+        q.pop();
+        for(auto v: graph[u])
+        {
+            if(dis[u]+v.cost<dis[v.node])
+            {
+                dis[v.node]=dis[u]+v.cost;
+                q.push({v.node,dis[v.node]});
+            }
+        }
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>Dijkstra2</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

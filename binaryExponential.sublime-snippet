@@ -1,0 +1,47 @@
+<snippet>
+	<content><![CDATA[
+ll power(ll a, ll n)
+{
+    // a=base, n=power
+    ll ret=1;
+    while(n)
+    {
+        if(n%2!=0)
+        {
+            ret*=a;
+            n--;
+        }
+        else
+        {
+            a*=a;
+            n/=2;
+        }
+    }
+    return ret;
+}
+
+ll powerMod(ll a, ll n, ll p)
+{
+    // a=base, n=power, p=some prime number
+    ll ret=1;
+    while(n)
+    {
+        if(n%2!=0)
+        {
+            ret=(ret*a)%p;
+            n--;
+        }
+        else
+        {
+            a=(a*a)%p;
+            n/=2;
+        }
+    }
+    return ret;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>power</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

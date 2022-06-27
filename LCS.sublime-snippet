@@ -1,0 +1,65 @@
+<snippet>
+	<content><![CDATA[
+const ll N=1005;
+
+string a,b;
+ll dp[N][N];
+ll na,nb;
+
+ll F(ll i, ll j)
+{
+    if(i>=na || j>=nb)
+    {
+        return 0;
+    }
+    if(dp[i][j]!=-1)
+    {
+        return dp[i][j];
+    }
+    ll maxx=0;
+    if(a[i]==b[j])
+    {
+        maxx=max(maxx,F(i+1,j+1)+1);
+    }
+    else
+    {
+        maxx=max(maxx,F(i+1,j));
+        maxx=max(maxx,F(i,j+1));
+    }
+    return dp[i][j]=maxx;
+}
+
+void solve()
+{
+    while(getline(cin,a))
+    {
+        getline(cin,b);
+        na=sz(a),nb=sz(b);
+        memset(dp,-1,sizeof(dp));
+        cout<<"length of lcs: "<<F(0,0)<<endl;
+        string lcs_string="";
+        for(ll i=0,j=0; i<na&&j<nb; )
+        {
+            if(a[i]==b[j])
+            {
+                lcs_string+=a[i];
+                i++,j++;
+            }
+            else if(dp[i+1][j]>dp[i][j+1])
+            {
+                i++;
+            }
+            else
+            {
+                j++;
+            }
+        }
+        cout<<"lcs string: "<<lcs_string<<endl;
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>LCS</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

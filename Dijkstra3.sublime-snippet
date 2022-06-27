@@ -1,0 +1,55 @@
+<snippet>
+	<content><![CDATA[
+struct edge
+{
+    ll node;
+    ll cost;
+    edge(ll _node, ll _cost)
+    {
+        node=_node;
+        cost=_cost;
+    }
+};
+
+struct myCmp
+{
+    bool operator() (const edge& a, const edge& b)
+    {
+        return a.cost>b.cost;
+    }
+};
+
+vector<edge> graph[$1+5];
+ll dis[$1+5];
+ll n,m;
+
+void dij(ll u)
+{
+    for(ll i=1; i<=n; i++)
+    {
+        dis[i]=inf;
+    }
+    dis[u]=0;
+    priority_queue<edge,vector<edge>,myCmp> q;
+    q.push({u,0});
+    while(!q.empty())
+    {
+        debx(q.top().cost);
+        u=q.top().node;
+        q.pop();
+        for(auto v: graph[u])
+        {
+            if(dis[u]+v.cost<dis[v.node])
+            {
+                dis[v.node]=dis[u]+v.cost;
+                q.push({v.node,dis[v.node]});
+            }
+        }
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>Dijkstra3</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

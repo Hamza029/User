@@ -1,0 +1,64 @@
+<snippet>
+	<content><![CDATA[
+vll graph[105];
+ll color[105];
+ll nodes,edges;
+
+ll bipartite(ll u)
+{
+    queue<ll>q;
+    q.push(u);
+    color[u]=1;
+    ll black=0,white=0;
+    while(!q.empty())
+    {
+        u=q.front();
+        q.pop();
+        if(color[u]==1) black++;
+        else white++;
+        for(auto v: graph[u])
+        {
+            if(color[v]==-1)
+            {
+                color[v]=color[u]^1;
+                q.push(v);
+            }
+            else if(color[v]==color[u]) return -1;
+        }
+    }
+    return max(1LL,min(black,white));
+}
+
+void check_bipartite()
+{
+    cin>>nodes>>edges;
+    for(ll i=0; i<nodes; i++)
+    {
+        graph[i].clear();
+    }
+    while(edges--)
+    {
+        ll u,v; cin>>u>>v;
+        graph[u].pb(v);
+        graph[v].pb(u);
+    }
+    ll tot=0;
+    memo(color,-1);
+    for(ll i=0; i<nodes; i++)
+    {
+        if(color[i]!=-1) continue;
+        ll x=bipartite(i);
+        if(x==-1)
+        {
+            cout<<"not bipartite"<<endl;
+            return;
+        }
+    }
+    cout<<"bipartite"<<endl;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>bipartiteChecking</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

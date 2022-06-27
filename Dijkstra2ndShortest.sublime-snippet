@@ -1,0 +1,70 @@
+<snippet>
+	<content><![CDATA[
+// Dijkstra's algorithm
+// initially set cost and dis to inf
+// ff=distance, ss=node
+
+vector<pll> graph[100000+5];
+ll dis[100000+5];
+ll n,m;
+
+void dij(ll u)
+{
+    for(ll i=1; i<=n; i++)
+    {
+        dis[i]=inf;
+    }
+    dis[u]=0;
+    // pushing negative to keep the samllest distance first
+    priority_queue<pll> q;
+    q.push({0,u});
+    while(!q.empty())
+    {
+        u=q.top().ss;
+        q.pop();
+        for(auto v: graph[u])
+        {
+            if(dis[u]+v.ff<dis[v.ss])
+            {
+                dis[v.ss]=dis[u]+v.ff;
+                q.push({-1*dis[v.ss],v.ss});
+            }
+        }
+    }
+}
+
+void solve()
+{
+    cin>>n>>m;
+    for(ll i=0; i<m; i++)
+    {
+        ll u,v,w; cin>>u>>v>>w;
+        graph[u].pb({w,v});
+        graph[v].pb({w,u});
+    }
+    ll dis1[n+5],disn[n+5];
+    dij(1);
+    for(ll i=1; i<=n; i++) dis1[i]=dis[i];
+    dij(n);
+    for(ll i=1; i<=n; i++) disn[i]=dis[i];
+    ll minn2=inf;
+    for(ll u=1; u<=n; u++)
+    {
+        for(auto v: graph[u])
+        {
+            ll dist=dis1[u]+disn[v.ss];
+            dist+=v.ff;
+            if(dist>dis1[n])
+            {
+                minn2=min(minn2,dist);
+            }
+        }
+    }
+    cout<<"Second shortest distance: "<<minn2<<endl;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>Dijkstra2ndShortest</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

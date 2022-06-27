@@ -1,0 +1,9 @@
+{
+	"cmd": ["g++", "$file", "-o", "$file_base_name", "-I/usr/local/include"],
+	"selector": "source.c++",
+
+	"windows":
+	{
+		"cmd": ["cl", "/Fo${file_path}", "/O2", "$file"]
+	}
+}

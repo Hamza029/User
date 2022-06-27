@@ -1,0 +1,62 @@
+<snippet>
+	<content><![CDATA[
+// Bellman Ford Algorithm (negative edge)
+
+struct edge
+{
+    ll node;
+    ll cost;
+};
+
+vector<edge> graph[100+5];
+ll dis[100+5];
+ll parent[100+5];
+ll n,m;
+
+void bell(ll u)
+{
+    for(ll i=1; i<=n; i++)
+    {
+        dis[i]=inf;
+        parent[i]=i;
+    }
+    dis[u]=0;
+    for(ll k=1; k<=n-1; k++)
+    {
+        bool done=1;
+        for(ll u=1; u<=n; u++)
+        {
+            for(auto v: graph[u])
+            {
+                if(dis[u]+v.cost<dis[v.node] && dis[u]!=inf)
+                {
+                    dis[v.node]=dis[u]+v.cost;
+                    parent[v.node]=u;
+                    done=0;
+                }
+            }
+        }
+        if(done) break;
+    }
+    // searching for negative cycle
+    // for(ll u=1; u<=n; u++)
+    // {
+    //     bool good=1;
+    //     for(auto v: graph[u])
+    //     {
+    //         if(dis[u]+v.cost<dis[v.node])
+    //         {
+    //             cout<<"negative cycle detected";
+    //             good=0;
+    //             break;
+    //         }
+    //     }
+    //     if(!good) break;
+    // }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>BellmanFord</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

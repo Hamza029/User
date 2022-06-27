@@ -1,0 +1,119 @@
+<snippet>
+	<content><![CDATA[
+// double hashing
+
+const int N = 1e6 + 9;
+ll modInverse(ll a, ll m) // calculates inverse modulo
+{
+    ll m0 = m;
+    ll y = 0, x = 1;
+ 
+    if (m == 1)
+    {
+        return 0;
+    }
+ 
+    while (a > 1)
+    {
+        ll q = a / m;
+        ll t = m;
+ 
+        m = a % m, a = t;
+        t = y;
+ 
+        y = x - q * y;
+        x = t;
+    }
+ 
+    if (x < 0)
+    {
+        x += m0;
+    }
+ 
+    return x;
+}
+
+ll p_pow[2][N]; // p_pow[i] = p^i % m
+ll modIn[2][N]; // inverse modulo for p_pow[]
+ll hash_val[2][N]; // prefix sum of hash values
+const ll p = 31; // base
+// const ll m = 1e9 + 7; // mod
+const ll m[2]={1000000007, 715225741};
+
+void compute_hash(string const& s, ll id) // precomputes hash_val
+{
+    hash_val[id][0] = s[0] - 'a' + 1;
+    for (ll i = 1; i < (ll)s.size(); i++)
+    {
+        hash_val[id][i] = (hash_val[id][i - 1] + (s[i] - 'a' + 1) * p_pow[id][i]) % m[id];
+    }
+}
+
+ll get_hash(string const& s, ll id) // returns hash value of a string s
+{
+    ll x = s[0] - 'a' + 1;
+    for (ll i = 1; i < (ll)s.size(); i++)
+    {
+        x = (x + (s[i] - 'a' + 1) * p_pow[id][i]) % m[id];
+ 
+    }
+    return x;
+}
+
+void powCalc(ll n, ll id) // precomputes p_pow[] and hash_val[]
+{
+    p_pow[id][0] = 1;
+    for (ll i = 1; i <= n; i++)
+    {
+        p_pow[id][i] = (p * p_pow[id][i - 1]) % m[id];
+        modIn[id][i]  =  modInverse(p_pow[id][i], m[id]);
+    }
+}
+
+ll query_hash(ll l, ll r, ll id) // calculates hash value of substring in range [l, r]
+{
+    if (r < l)
+    {
+        return 0;
+    }
+    if (l == 0)
+    {
+        return hash_val[id][r];
+    }
+    else
+    {
+        return ((((hash_val[id][r] - hash_val[id][l - 1]) + m[id]) % m[id]) * modIn[id][l]) % m[id];
+    }
+}
+
+// if two substrings of range [l1, r1], [l2, r2] are merged it returns hash value of the merged string
+ll mergeHash(ll l1, ll r1, ll l2, ll r2, ll id) 
+{
+    return (query_hash(l1, r1, id) + query_hash(l2, r2, id) * p_pow[id][r1 - l1 + 1]) % m[id];
+}
+
+void test() // for testing the template
+{
+    // this calculates the number of unique substrings with length k in string s
+    ll n,k; cin>>n>>k;
+    string s; cin>>s;
+    powCalc(n,0);
+    powCalc(n,1);
+    compute_hash(s,0);
+    compute_hash(s,1);
+    set<pll> st;
+    ll ans=0;
+    for(ll i=0; i+k-1<n; i++)
+    {
+        ll val1=query_hash(i,i+k-1,0);
+        ll val2=query_hash(i,i+k-1,1);
+        st.insert({val1,val2});
+    }
+    cout<<sz(st)<<endl;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>DoubleHashing</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

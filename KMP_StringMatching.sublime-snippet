@@ -1,0 +1,82 @@
+<snippet>
+	<content><![CDATA[
+// KMP
+
+ll lps[1000005];
+ 
+void findLps(string str) //failure table
+{
+    ll i,j;
+    lps[0] = 0;
+    for(i=1,j=0;i<str.size();)
+    {
+        if(str[i]==str[j])
+        {
+            lps[i] = j+1;
+            i++;
+            j++;
+        }
+        else
+        {
+            if(j==0)
+            {
+                lps[i] = 0;
+                i++;
+            }
+            else j = lps[j-1];
+        }
+    }
+}
+ 
+void comp(string a,string b)
+{
+    ll i,j;
+    bool found = false;
+    for(i=0,j=0;i<a.size();)
+    {
+        if(a[i]==b[j])
+        {
+            i++;
+            j++;
+        }
+        else
+        {
+            if(j==0)
+            {
+                i++;
+            }
+            else j = lps[j-1];
+            // cout<<i<<", "<<j<<endl;
+        }
+        if(j==b.size())
+        {
+            cout<<"Match found at: "<<i-b.size()<<endl;
+            j = lps[j-1];
+            found = true;
+        }
+    }
+    if(!found)
+        cout<<"Not Found"<<endl;
+}
+
+void test()
+{
+    ll n,m,t,i,j,k,x=0,y;
+    string a,b;
+    cin>>a;
+ 
+    while(1)
+    {
+        cin>>b;
+        if(b=="-1")
+            break;
+        findLps(b);
+        comp(a,b);
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>KMP</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

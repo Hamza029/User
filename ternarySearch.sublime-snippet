@@ -1,0 +1,23 @@
+<snippet>
+	<content><![CDATA[
+ll ternarySearch(vll v, ll left, ll right, ll val)
+{
+    /*
+    ternarySearch(v,0,(ll)v.size()-1,val)
+    */
+    if(left>right) return -1;
+    ll mid1=left+(right-left)/3;
+    ll mid2=mid1+(right-left)/3;
+    deb2(right,left);
+    if(v[mid1]==val) return mid1;
+    if(v[mid2]==val) return mid2;
+    if(val<v[mid1]) return ternarySearch(v,left,mid1-1,val);
+    if(val>v[mid2]) return ternarySearch(v,mid2+1,right,val);
+    return ternarySearch(v,mid1,mid2,val);
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>ternarySearch</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

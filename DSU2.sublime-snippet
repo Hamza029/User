@@ -1,0 +1,48 @@
+<snippet>
+	<content><![CDATA[
+vector<pll> sets;
+ll parent[100000+5];
+ll Rank[100000+5]; // initialize with 1
+ll lim;
+
+ll find_set(ll u)
+{
+    if(parent[u]==u) return u;
+    return parent[u]=find_set(parent[u]);
+}
+
+void make_set()
+{
+    for(ll i=1; i<=lim; i++)
+    {
+        parent[i]=i;
+    }
+}
+
+void Union(ll u, ll v)
+{
+    ll a=find_set(u);
+    ll b=find_set(v);
+    if(a==b) return;
+    if(Rank[a]==Rank[b])
+    {
+        parent[b]=a;
+        Rank[a]+=Rank[b];
+    }
+    else if(Rank[a]>Rank[b])
+    {
+        parent[b]=a;
+        Rank[a]+=Rank[b];
+    }
+    else
+    {
+        parent[a]=b;
+        Rank[b]+=Rank[a];
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>DSU2</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

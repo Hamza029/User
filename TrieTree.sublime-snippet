@@ -1,0 +1,44 @@
+<snippet>
+	<content><![CDATA[
+//Trie Tree
+struct Node
+{
+    bool endmark=0;
+    map<char,Node*> child;
+};
+
+Node* root = new Node();
+
+void Insert(string s)
+{
+    Node* curr=root;
+    for(char x: s)
+    {
+        if(curr->child[x]==NULL)
+        {
+            curr->child[x]=new Node();
+        }
+        curr=curr->child[x];
+    }
+    curr->endmark=1;
+}
+
+bool Search(string s)
+{
+    Node* curr=root;
+    for(char x: s)
+    {
+        if(curr->child[x]==NULL)
+        {
+            return 0;
+        }
+        curr=curr->child[x];
+    }
+    return curr->endmark;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>TrieTree</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

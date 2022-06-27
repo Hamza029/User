@@ -1,0 +1,31 @@
+<snippet>
+	<content><![CDATA[
+// nCr using DP
+/*
+once dp is set to -1 with memset, no need to reset dp again for multiple test cases
+since nCr won't change for that particular state
+*/
+
+const ll N=105,R=105;
+
+ll dp[N][R];
+
+ll F(ll n, ll r)
+{
+    // deb2(n,r);
+    if(n<r) return 0;
+    if(n==r || r==0) return 1;
+    if(dp[n][r]!=-1)
+    {
+        return dp[n][r];
+    }
+    ll c1=F(n-1,r);
+    ll c2=F(n-1,r-1);
+    return dp[n][r]=c1+c2;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>nCrDP</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

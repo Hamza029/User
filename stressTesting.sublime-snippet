@@ -1,0 +1,50 @@
+<snippet>
+	<content><![CDATA[
+struct testcase
+{
+    ll a,n,d;
+};
+
+ll randomNumber(ll a,ll b)
+{
+    return a + (rand() % b);
+}
+
+testcase generateTestCase()
+{
+    testcase randomTest;
+    randomTest.a = randomNumber(1,100000);
+    randomTest.n = randomNumber(1,100000);
+    randomTest.d = randomNumber(-100000,100000);
+    return randomTest;
+}
+
+ll bruteForce(testcase T)
+{
+    ll ret;
+    return ret;
+}
+
+ll optimizedSolution(testcase T)
+{
+    ll ret;
+    return ret;
+}
+
+void debugger()
+{
+    testcase random = generateTestCase();
+    ll ans1 = bruteForce(random);
+    ll ans2 = optimizedSolution(random);
+    if(ans1 != ans2)
+    {
+        cout<<random.a<<endl;
+        return;
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>stressTest</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

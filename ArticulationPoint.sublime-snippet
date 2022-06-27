@@ -1,0 +1,86 @@
+<snippet>
+	<content><![CDATA[
+/*
+low[u] = what is the lowest ancestor that can be reached directly from that node
+disc[u] = discovery time of u
+dfsAP(u,p) -> p = parent of 
+ap[u] = true if u is an articulation point
+*/
+
+const ll N=105;
+
+vll graph[N];
+ll low[N], disc[N];
+bool ap[N];
+ll dTime;
+ll n,m;
+
+ll dfsAP(ll u, ll p)
+{
+    ll children=0;
+    low[u]=disc[u]=++dTime;
+
+    for(auto v: graph[u])
+    {
+        if(v==p)
+        {
+            continue;
+        }
+
+        if(!disc[v])
+        {
+            children++;
+            dfsAP(v,u);
+
+            if(disc[u]<=low[v])
+            {
+                ap[u]=1;
+            }
+
+            low[u]=min(low[u],low[v]);
+        }
+        else
+        {
+            low[u]=min(low[u],disc[v]);
+        }
+    }
+
+    return children;
+}
+
+void solve()
+{
+    cin>>n>>m;
+
+    for(ll i=0; i<n; i++)
+    {
+        graph[i].clear();
+    }
+
+    for(ll i=0; i<m; i++)
+    {
+        ll u,v; cin>>u>>v;
+        graph[u].pb(v);
+        graph[v].pb(u);
+    }
+
+    dTime=0;
+    memo(disc,0);
+    memo(ap,0);
+
+    for(ll u=0; u<n; u++)
+    {
+        if(!disc[u])
+        {
+            ap[u]=dfsAP(u,u)>1;
+        }
+    }
+
+    for(ll u=0; u<n; u++) deb2(u,ap[u]);
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>articulationPoint</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

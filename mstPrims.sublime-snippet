@@ -1,0 +1,65 @@
+<snippet>
+	<content><![CDATA[
+// prim's algorithm
+
+const ll N=100005;
+
+bool vis[N];
+
+struct edge
+{
+    ll node,cost;
+    bool operator < (const edge& p) const
+    {
+        return cost > p.cost;
+    }
+};
+
+vector<edge> ev[N];
+
+ll mstPrims(ll src, ll n)
+{
+    memset(vis,0,sizeof(vis));
+    priority_queue<edge> q;
+    q.push({src,0});
+    ll sum=0;
+    for(ll k=1; k<=n; k++)
+    {
+        while(!q.empty() && vis[q.top().node])
+        {
+            q.pop();
+        }
+        if(q.empty()) break;
+        ll u=q.top().node;
+        vis[u]=1;
+        sum+=q.top().cost;
+        q.pop();
+        for(auto v: ev[u])
+        {
+            if(!vis[v.node])
+            {
+                q.push(v);
+            }
+        }
+    }
+    return sum;
+}
+
+void test()
+{
+    ll n,m; cin>>n>>m;
+    for(ll i=1; i<=m; i++)
+    {
+        ll u,v,w; cin>>u>>v>>w;
+        ev[u].pb({v,w});
+        ev[v].pb({u,w});
+    }
+    ll sum=mstPrims(1,n);
+    cout<<sum<<endl;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>mstPrims</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,64 @@
+<snippet>
+	<content><![CDATA[
+const int N=105;
+
+int wt[N],v[N];
+int mat[N][10*N];
+int n,W;
+
+void print()
+{
+    int i=n,w=W;
+    int knap=mat[n][W];
+    vector<bool> mark(n+1,0);
+    while(i>0 && knap>0)
+    {
+        if(knap==mat[i-1][w])
+        {
+            i--;
+        }
+        else
+        {
+            mark[i]=1;
+            knap-=v[i];
+            w-=wt[i];
+            i--;
+        }
+    }
+    for(int i=1; i<=n; i++) cout<<mark[i]<<" "; cout<<endl;
+}
+
+void solve()
+{
+    cin>>n>>W;
+    for(int i=1; i<=n; i++)
+    {
+        cin>>wt[i]>>v[i];
+    }
+    for(int i=1; i<=n; i++)
+    {
+        for(int w=1; w<=W; w++)
+        {
+            if(w>=wt[i])
+            {
+                mat[i][w]=max(mat[i-1][w],mat[i-1][w-wt[i]]+v[i]);
+            }
+            else
+            {
+                mat[i][w]=mat[i-1][w];
+            }
+        }
+    }
+
+    cout<<mat[n][W]<<endl;
+
+    print();
+
+    return;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>Knapsack-0/1</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

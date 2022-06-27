@@ -1,0 +1,29 @@
+<snippet>
+	<content><![CDATA[
+ll phi[M];
+
+void sievePhi()
+{
+    for(ll i=1; i<=M; i++)
+    {
+        phi[i]=i;
+    }
+
+    for(ll i=2; i<=M; i++)
+    {
+        if(phi[i]==i)
+        {
+            for(ll j=i; j<=M; j+=i)
+            {
+                phi[j]/=i;
+                phi[j]*=(i-1);
+            }
+        }
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>phi2</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

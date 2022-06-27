@@ -1,0 +1,90 @@
+<snippet>
+	<content><![CDATA[
+// Kruskal's algorithm for 2nd best MST O(VE)
+// n = nodes, m = edges
+struct edge
+{
+    ll u,v,w;
+};
+
+bool cmp(const edge& a, const edge& b)
+{
+    return a.w<b.w;
+}
+
+ll parent[100000+5];
+vector<edge> ev;
+
+ll find_set(ll u)
+{
+    if(parent[u]==u) return u;
+    return parent[u]=find_set(parent[u]);
+}
+
+ll c=0;
+ll mark[100000+5];
+ll mst(ll n)
+{
+    sort(all(ev),cmp);
+    for(ll i=1; i<=n; i++)
+    {
+        parent[i]=i;
+    }
+    memset(mark,-1,sizeof(mark));
+    ll cnt=0, sum=0;
+    c=0;
+    for(ll i=0; i<sz(ev); i++)
+    {
+        edge e=ev[i];
+        ll u=find_set(e.u);
+        ll v=find_set(e.v);
+        if(u!=v)
+        {
+            parent[v]=u;
+            mark[++c]=i;
+            cnt++;
+            sum+=e.w;
+            if(cnt==n-1)
+            {
+                break;
+            }
+        }
+    }
+    if(cnt==n-1) return sum;
+    return -1;
+}
+
+ll mst2(ll n, ll m)
+{
+    ll minn=inf;
+    ll cnt=0, sum=0;
+    for(ll i=1; i<=c; i++)
+    {
+        sum=0,cnt=0;
+        for(ll i=1; i<=n; i++)
+        {
+            parent[i]=i;
+        }
+        for(ll j=0; j<m; j++)
+        {
+            if(mark[i]==j) continue;
+            ll u=find_set(ev[j].u);
+            ll v=find_set(ev[j].v);
+            if(u!=v)
+            {
+                parent[v]=u;
+                sum+=ev[j].w;
+                cnt++;
+                if(cnt==n-1) break;
+            }
+        }
+        if(cnt==n-1 && sum<minn) minn=sum;
+    }
+    return minn;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>MinimumSpanningTree2</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

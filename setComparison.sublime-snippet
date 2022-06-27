@@ -1,0 +1,18 @@
+<snippet>
+	<content><![CDATA[
+// set comparotor for pair<ll,ll>
+// set<pll,cmpStruct>
+struct cmpStruct
+{
+    bool operator() (const pll& a, const pll& b) const
+    {
+        if(a.ss!=b.ss) return a.ss<b.ss;
+        return a.ff>b.ff;
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>setComparison</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

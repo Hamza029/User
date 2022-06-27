@@ -1,0 +1,107 @@
+<snippet>
+	<content><![CDATA[
+/*bool marked[M];
+
+vll normalSieve(ll n)
+{
+	vll primes;
+	if(n<2) return primes;
+	//bool marked[n+1];
+	memset(marked, 0, sizeof(marked));
+	for(ll i = 2; i*i <= n; i++)
+	{
+		if(!marked[i])
+		{
+			for(ll j = i*i; j <= n; j += i)
+			{
+				marked[j] = 1;
+			}
+		}
+	}
+	primes.push_back(2);
+	for(ll i=3; i<=n; i+=2)
+	{
+		if(!marked[i])
+		{
+			primes.push_back(i);
+		}
+	}
+	return primes;
+}*/
+
+vector <ll> sqPrimes;
+bool marked[M];
+//bitset<M+5> marked;
+
+void sieve()
+{
+	marked[0]=marked[1]=1;
+	for(ll i = 2; i*i <= M; i++)
+	{
+		if(!marked[i])
+		{
+			for(ll j = i*i; j <= M; j += i)
+			{
+				marked[j]=1;
+			}
+		}
+	}
+
+	sqPrimes.push_back(2);
+	for(ll i = 3; i <= M; i+=2)
+	{
+		if(!marked[i])
+		{
+			sqPrimes.push_back(i);
+		}
+	}
+}
+
+ll oof(ll r)
+{
+	r = (ll)sqrt(r);
+	auto it=upper_bound(all(sqPrimes),r);
+	return (it-sqPrimes.begin());
+}
+
+vll segmentedSieve(ll l, ll r)
+{
+	ll limit = (ll)(sqrt(r));
+
+	//vll sqPrimes = normalSieve(limit);
+	//ll sqLen = sqPrimes.size();
+	ll sqLen = oof(r);
+	vll primes;
+
+	bool mrk[r-l+1];
+	memset(mrk, 0, sizeof(mrk));
+
+	for(ll i=0; i<sqLen; i++)
+	{
+		ll start = sqPrimes[i]*sqPrimes[i];
+		if(start < l)
+		{
+			start = ((l+sqPrimes[i]-1)/sqPrimes[i])*sqPrimes[i];
+		}
+		for(ll j=start; j<=r; j+=sqPrimes[i])
+		{
+			mrk[j-l] = 1;
+		}
+	}
+
+	for(ll i=l; i<=r; i++)
+	{
+		if(!mrk[i-l] && i>=2)
+		{
+			primes.push_back(i);
+		}
+	}
+
+	return primes;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>segmentedSieve</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

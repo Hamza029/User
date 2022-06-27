@@ -1,0 +1,35 @@
+<snippet>
+	<content><![CDATA[
+// for prime factorization of N, store prime numbers upto sqrt(N) inclusive
+// len = primes.size()
+ll SOD(ll n)
+{
+    ll sod=1;
+    for(ll i=0; primes[i]*primes[i]<=n && i<len; i++)
+    {
+        if(n%primes[i]==0)
+        {
+            ll p=1;
+            while(n%primes[i]==0)
+            {
+                n/=primes[i];
+                p*=primes[i];
+            }
+            p*=primes[i];
+            ll s=(p-1)/(primes[i]-1);
+            sod*=s;
+        }
+    }
+    if(n>1)
+    {
+        ll s=(n*n-1)/(n-1);
+        sod*=s;
+    }
+    return sod;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>SumOfDivisors</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

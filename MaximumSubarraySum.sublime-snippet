@@ -1,0 +1,25 @@
+<snippet>
+	<content><![CDATA[
+
+// Maximum subarray sum (Kadane's algorithm)
+
+ll ara[100005];
+ll n;
+
+ll kadane()
+{
+    ll max_so_far=ninf, max_ending_here=0;
+    for(ll i=0; i<n; i++)
+    {
+        max_ending_here=max_ending_here+ara[i];
+        max_so_far=max(max_so_far,max_ending_here);
+        max_ending_here=max(max_ending_here,0LL);
+    }
+    return max_so_far;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>maximumSubarraySum</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

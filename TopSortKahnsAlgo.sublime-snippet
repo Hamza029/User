@@ -1,0 +1,35 @@
+<snippet>
+	<content><![CDATA[
+vector<int> graph[100000+5];
+ll indegree[100000+5];
+vector<ll> order;
+ll nodes,edges;
+
+void TopSort()
+{
+    queue<ll> q;
+    for(ll i=1; i<=nodes; i++)
+    {
+        if(indegree[i]==0)
+        {
+            q.push(i);
+        }
+    }
+    while(!q.empty())
+    {
+        ll u=q.front();
+        q.pop();
+        order.pb(u);
+        for(auto v: graph[u])
+        {
+            indegree[v]--;
+            if(indegree[v]==0) q.push(v);
+        }
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>TopSortKahns</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

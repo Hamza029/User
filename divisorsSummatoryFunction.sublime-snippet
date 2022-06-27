@@ -1,0 +1,18 @@
+<snippet>
+	<content><![CDATA[
+// sum of all divisors
+ll SNOD(ll n)
+{
+	ll sum=0;
+	for(ll i=1; i<=n; i++)
+	{
+		sum+=(n/i);
+	}
+	return sum;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>snod</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

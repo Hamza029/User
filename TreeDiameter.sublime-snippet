@@ -1,0 +1,74 @@
+<snippet>
+	<content><![CDATA[
+// Tree diameter or farthest nodes in a tree
+
+/*
+For finding cost to go to farthest node from each node:
+    1. Take a level array like this level[3][N]
+    2. Run dfs from root and find the farthest node from root. Let it be x. Use level[0][i], i = node
+    3. Now find farthest node from x and store the levels in level[1][i], where i indicates a node number.
+        Now x = farthest node from x
+    4. Again find farthest node from x and store the levels in level[2][i]
+    5. Finally max(level[1][i], level[2][i]) is the cost to go to the farthest node from node i
+*/
+
+const ll N=30005;
+
+struct edge
+{
+    ll node;
+    ll cost;
+};
+
+vector<edge> graph[N];
+ll level[N];
+ll maxx=-1,x=-1;
+
+void dfs(ll u)
+{
+    if(level[u]>maxx)
+    {
+        maxx=level[u];
+        x=u;
+    }
+    for(auto v: graph[u])
+    {
+        if(level[v.node]==-1)
+        {
+            level[v.node]=level[u]+v.cost;
+            dfs(v.node);
+        }
+    }
+}
+
+ll cs=0;
+
+void solve()
+{
+    ll n; cin>>n;
+    for(ll i=1; i<=n-1; i++)
+    {
+        ll u,v,w; cin>>u>>v>>w;
+        graph[u].pb({v,w});
+        graph[v].pb({u,w});
+    }
+    memset(level,-1,sizeof(level));
+    maxx=-1,x=-1;
+    level[0]=0;
+    dfs(0);
+    maxx=-1;
+    memset(level,-1,sizeof(level));
+    level[x]=0;
+    dfs(x);
+    cout<<"Case "<<++cs<<": "<<maxx<<endl;
+    for(ll i=0; i<n; i++)
+    {
+        graph[i].clear();
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>TreeDiameter</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

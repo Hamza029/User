@@ -1,0 +1,37 @@
+<snippet>
+	<content><![CDATA[
+ll powerMod(ll a, ll n, ll p)
+{
+    // a=base, n=power, p=some prime number
+    ll ret=1;
+    while(n)
+    {
+        if(n%2!=0)
+        {
+            ret=(ret*a)%p;
+            n--;
+        }
+        else
+        {
+            a=(a*a)%p;
+            n/=2;
+        }
+    }
+    return ret;
+}
+
+ll inverseMod(ll x, ll y, ll p) // modular multiplicative inverse
+{
+    // p is prime
+    // (x / y) % p
+    // = ((x % p) * ((y^-1) % p)) % p
+    // = (x * powerMod(y,p-2,p)) % p
+    
+    return (x*powerMod(y,p-2,p))%p;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>inverseModulo</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

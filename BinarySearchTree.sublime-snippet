@@ -1,0 +1,142 @@
+<snippet>
+	<content><![CDATA[
+struct Node
+{
+    int data;
+    Node* right=NULL;
+    Node* left=NULL;
+};
+
+Node* Insert(int val, Node* curr)
+{
+    if(curr==NULL)
+    {
+        Node* neww = new Node();
+        neww->data = val;
+        return neww;
+    }
+    if(val<=curr->data)
+    {
+        curr->left=Insert(val,curr->left);
+    }
+    else if(val>curr->data)
+    {
+        curr->right=Insert(val,curr->right);
+    }
+    return curr;
+}
+
+Node* Search(int val, Node* curr)
+{
+    if(curr==NULL)
+    {
+        return NULL;
+    }
+    if(val==curr->data)
+    {
+        return curr;
+    }
+    if(val<=curr->data)
+    {
+        return Search(val,curr->left);
+    }
+    else if(val>curr->data)
+    {
+        return Search(val,curr->right);
+    }
+}
+
+int FindMin(Node* curr)
+{
+    if(curr==NULL)
+    {
+        return -1;
+    }
+    if(curr->left==NULL)
+    {
+        return curr->data;
+    }
+    return FindMin(curr->left);
+}
+
+Node* Delete(int val, Node* curr)
+{
+    if(curr==NULL)
+    {
+        return NULL;
+    }
+    if(val<curr->data)
+    {
+        curr->left=Delete(val,curr->left);
+    }
+    else if(val>curr->data)
+    {
+        curr->right=Delete(val,curr->right);
+    }
+    else
+    {
+        if(curr->left==NULL && curr->right==NULL)
+        {
+            delete curr;
+            curr=NULL;
+        }
+        else if(curr->left!=NULL && curr->right==NULL)
+        {
+            Node* tmp=curr->left;
+            delete curr;
+            curr=tmp;
+        }
+        else if(curr->left==NULL && curr->right!=NULL)
+        {
+            Node* tmp=curr->right;
+            delete curr;
+            curr=tmp;
+        }
+        else
+        {
+            int minn=FindMin(curr->right);
+            curr->data=minn;
+            curr->right=Delete(minn,curr->right);
+        }
+    }
+    return curr;
+}
+
+void InOrder(Node* curr)
+{
+    if(curr==NULL)
+    {
+        return;
+    }
+    InOrder(curr->left);
+    cout<<curr->data<<" ";
+    InOrder(curr->right);
+}
+
+int main()
+{
+    Node* root=NULL;
+    root=Insert(35,root);
+    Insert(20,root);
+    Insert(50,root);
+    Insert(25,root);
+    Insert(45,root);
+    Insert(15,root);
+
+    Delete(35,root);
+
+    InOrder(root);
+    cout<<endl;
+
+    Node* node=Search(25,root);
+    cout<<node->data<<endl;
+    cout<<root->data<<endl;
+
+    return 0;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>BinarySearchTree</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,75 @@
+<snippet>
+	<content><![CDATA[
+ll F[1000000+5];
+
+ll power(ll a, ll n)
+{
+    // a=base, n=power
+    ll ret=1;
+    while(n)
+    {
+        if(n%2!=0)
+        {
+            ret*=a;
+            n--;
+        }
+        else
+        {
+            a*=a;
+            n/=2;
+        }
+    }
+    return ret;
+}
+
+ll powerMod(ll a, ll n, ll p)
+{
+    // a=base, n=power, p=some prime number
+    ll ret=1;
+    while(n)
+    {
+        if(n%2!=0)
+        {
+            ret=(ret*a)%p;
+            n--;
+        }
+        else
+        {
+            a=(a*a)%p;
+            n/=2;
+        }
+    }
+    return ret;
+}
+
+void calcFact(ll n)
+{
+    F[0]=F[1]=1;
+    for(ll i=2; i<=n; i++)
+    {
+        F[i]=(F[i-1]*i)%MOD;
+    }
+}
+
+ll C(ll n, ll r)
+{
+    if(r>n) return 0;
+    ll ret=F[n];
+    ret=(ret*powerMod(F[r],MOD-2,MOD))%MOD;
+    ret=(ret*powerMod(F[n-r],MOD-2,MOD))%MOD;
+    return ret;
+}
+
+ll P(ll n, ll r)
+{
+    if(r>n) return 0;
+    ll ret=F[n];
+    ret=(ret*powerMod(F[n-r],MOD-2,MOD))%MOD;
+    return ret;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>nCrMOD</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

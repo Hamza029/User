@@ -1,0 +1,54 @@
+<snippet>
+	<content><![CDATA[
+// Kruskal's algorithm
+struct edge
+{
+    ll u,v,w;
+};
+
+bool cmp(const edge& a, const edge& b)
+{
+    return a.w<b.w;
+}
+
+ll parent[$1];
+vector<edge> ev;
+
+ll find_set(ll u)
+{
+    if(parent[u]==u) return u;
+    return parent[u]=find_set(parent[u]);
+}
+
+// n=nodes
+ll mst(ll n)
+{
+    sort(all(ev),cmp);
+    for(ll i=1; i<=n; i++)
+    {
+        parent[i]=i;
+    }
+    ll cnt=0, sum=0;
+    for(auto e: ev)
+    {
+        ll u=find_set(e.u);
+        ll v=find_set(e.v);
+        if(u!=v)
+        {
+            parent[v]=u;
+            cnt++;
+            sum+=e.w;
+            if(cnt==n-1)
+            {
+                break;
+            }
+        }
+    }
+    return sum;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>MinimumSpanningTree</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
