@@ -1,0 +1,67 @@
+<snippet>
+	<content><![CDATA[
+const ll MAX =400005;
+
+struct info
+{
+    ll tup[2], indx;
+    // tup[0] = rank of 1st half, tup[1] = rank of 2nd half
+
+    bool operator < (const info& a) const
+    {
+        return (tup[0] != a.tup[0]) ? tup[0] < a.tup[0] : tup[1] < a.tup[1];
+    }
+}arr[MAX];
+
+ll Rank[18][MAX], step;
+ 
+void build_suffix_array(const string& text)
+{
+    ll n = text.size(), jump;
+
+    for(ll j = 0; j < n; j++)
+    {
+        // rank suffixes according to 1st char
+        Rank[0][j] = text[j];
+
+        memset(arr[j].tup, 0, sizeof(arr[j].tup));
+    }
+
+    for(step = 1, jump = 1; jump <= n; step++, jump *= 2)
+    {
+        for(ll j = 0; j <=n; j++)
+        {
+            arr[j].indx = j;
+
+            // Rank[step - 1][j] = what was the rank of substring of length 2^(step-1) starting from jth index
+            arr[j].tup[0] = Rank[step - 1][j];
+
+            // if 2nd half exists then set the rank accordingly otherwise set rank to -1
+            arr[j].tup[1] = (j + jump < n) ? Rank[step - 1][j + jump] : -1;
+        }
+
+        sort(arr, arr + n);
+
+        Rank[step][arr[0].indx] = 0;
+
+        for(ll j = 1; j < n; j++)
+        {
+            if(arr[j].tup[0] == arr[j-1].tup[0] && arr[j].tup[1] == arr[j-1].tup[1])
+            {
+                // if this substring is equal to previous substring then assign previous rank
+                Rank[step][arr[j].indx] = Rank[step][arr[j - 1].indx];
+            }
+            else
+            {
+                // if not then assign new rank
+                Rank[step][arr[j].indx] = j;
+            }
+        }
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>suffixArray</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
