@@ -1,6 +1,6 @@
 <snippet>
 	<content><![CDATA[
-const ll MAX =400005;
+const ll MAX = (1<<19) + 5;
 
 struct info
 {
@@ -13,7 +13,8 @@ struct info
     }
 }arr[MAX];
 
-ll Rank[18][MAX], step;
+ll Rank[20][MAX], step;
+ll LCP[MAX];
  
 void build_suffix_array(const string& text)
 {
@@ -58,6 +59,52 @@ void build_suffix_array(const string& text)
             }
         }
     }
+}
+
+void build_LCP_array(const string& text)
+{
+    LCP[0] = 0;
+    ll n = text.size(), i, j, id1, id2;
+    for(i = 1; i < n; i++)
+    {
+        id1 = arr[i - 1].indx;
+        id2 = arr[i].indx;
+        LCP[i] = 0;
+        for(j = step - 1; j >= 0; j--)
+        {
+            if(Rank[j][id1] == Rank[j][id2] && id1 < n && id2 < n)
+            {
+                LCP[i] += (1 << j);
+                id1 += (1 << j);
+                id2 += (1 << j);
+            }
+        }
+        cout << arr[i - 1].indx << " " << arr[i].indx << " " << LCP[i] << endl;
+    }
+    for(i = 0; i < n; i++)
+        cout << i << " " << LCP[i] << endl;
+}
+
+getLCP(ll i, ll j)
+{
+    // return LCP of suffixes starting from i and starting from j
+
+    // LCP(i,j) = min(LCP[pos[i]], LCP[pos[i]+1], LCP[pos[i]+2], ..., LCP[POS[j]])
+
+    // pos[i] = position in arr[] where arr[].indx = i, this can be precalculated in an array
+
+    // minimum in the segment can be caluclated with segment tree
+}
+
+void test()
+{
+    string s; cin>>s;
+
+    s = s + "#";
+
+    build_suffix_array(s);
+
+    build_LCP_array(s);
 }
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
