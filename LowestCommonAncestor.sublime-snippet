@@ -5,7 +5,6 @@ const ll N=100005;
 ll level[N];
 ll parent[N];
 ll P[N][22]; // sparse table
-ll n;
 
 vector<ll> graph[N];
 
@@ -13,10 +12,10 @@ void dfs(ll u)
 {
     for(auto v: graph[u])
     {
-        if(level[v]==-1)
+        if(level[v] == -1)
         {
-            level[v]=level[u]+1;
-            parent[v]=u;
+            level[v] = level[u]+1;
+            parent[v] = u;
             dfs(v);
         }
     }
@@ -25,20 +24,25 @@ void dfs(ll u)
 void init(ll n)
 {
     memset(level,-1,sizeof(level));
-    level[0]=0,parent[0]=-1;
+
+    level[0] = 0, parent[0] = -1;
+
     dfs(0);
+
     memset(P,-1,sizeof(P));
+
     for(ll i=0; i<n; i++)
     {
-        P[i][0]=parent[i];
+        P[i][0] = parent[i];
     }
+
     for(ll j=1; (1<<j)<n; j++)
     {
         for(ll i=0; i<n; i++)
         {
-            if(P[i][j-1]!=-1)
+            if(P[i][j-1] != -1)
             {
-                P[i][j]=P[P[i][j-1]][j-1];
+                P[i][j] = P[ P[i][j-1] ][ j-1 ];
             }
         }
     }
@@ -47,41 +51,51 @@ void init(ll n)
 ll query(ll n, ll p, ll q) // n = number of nodes
 {
     if(level[p]<level[q]) swap(p,q);
+
     ll log=0;
+
     while(1)
     {
         ll next=log+1;
         if((1<<next)>level[p]) break;
         log++;
     }
+
     for(ll i=log; i>=0; i--)
     {
-        if(level[p]-(1<<i)>=level[q])
+        if(level[p] - (1<<i) >= level[q])
         {
-            p=P[p][i];
+            p = P[p][i];
         }
     }
-    if(p==q) return p;
+
+    if(p == q) return p;
+
     for(ll i=log; i>=0; i--)
     {
-        if(P[p][i]!=-1 && P[p][i]!=P[q][i])
+        if(P[p][i] != -1 && P[p][i] != P[q][i])
         {
-            p=P[p][i];
-            q=P[q][i];
+            p = P[p][i];
+            q = P[q][i];
         }
     }
+
     return parent[p];
 }
 
 void solve()
 {
-    n=5;
+    ll n=5;
+
     graph[0].pb(1);
     graph[0].pb(2);
     graph[2].pb(3);
     graph[2].pb(4);
+
     init(n);
+
     ll ans=query(n,3,4);
+
     debx(ans);
 }
 ]]></content>

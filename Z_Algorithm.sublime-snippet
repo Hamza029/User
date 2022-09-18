@@ -1,0 +1,65 @@
+<snippet>
+	<content><![CDATA[
+const ll N = 1e5 + 5;
+
+ll Z[N];
+
+void Z_Algorithm(const string& text)
+{
+    ll i , L , R ;
+
+    ll n = sz(text);
+
+    Z[0] = n ; // always ;
+
+    for(i = 1, L = 0, R = 0; i < n; i++)
+    {
+        // text =   A B C A B C A B C
+        // Z[]  =   9 0 0 6 0 0 3 0 0
+
+        if(i <= R)
+        {
+            Z[i] = min(R - i + 1, Z[i - L]);
+        }
+
+        while(i + Z[i] < n && text[Z[i]] == text[i + Z[i]])
+        {
+            Z[i]++;
+        }
+
+        if(i + Z[i] - 1 > R) // need to update
+        {
+            L = i;
+            R = i + Z[i] - 1 ;
+        }
+    }
+}
+
+void test()
+{
+    // pattern match + nuber of occurances
+
+    string text,pattern; cin>>text>>pattern;
+
+    string s = pattern + "#" + text;
+
+    Z_Algorithm(s);
+
+    ll c=0;
+
+    for(ll i=sz(pattern); i<sz(s); i++)
+    {
+        if(Z[i] == sz(pattern))
+        {
+            c++;
+        }
+    }
+
+    cout<<"Number of occurances: "<<c<<endl;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>Z_Algorithm</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
