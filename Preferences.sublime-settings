@@ -420,12 +420,12 @@
 	/*"gni_002": false,*/
 	/*"gni_003": false,*/
 	/*"gnc_001": true,*/
-	"gn_hide_tab_dropdown": true,
-	"gn_overlay_scroll_bars": true,
-	"gn_sidebar_box": true,
-	"gn_title_bar": true,
-	"gnwidg1": true,
-	"gnwidgo": true,
+	/*"gn_hide_tab_dropdown": true,*/
+	/*"gn_overlay_scroll_bars": true,*/
+	/*"gn_sidebar_box": true,*/
+	/*"gn_title_bar": true,*/
+	/*"gnwidg1": true,*/
+	/*"gnwidgo": true,*/
 	/*"gnc_001": true,*/
 	/*"gnc_h23": true,*/
 	/*"gnc_m09": true,*/
@@ -704,4 +704,25 @@
 	/*"gnc_m05": true,*/
 	/*"gnc_m06": true,*/
 	/*"gnc_m07": true,*/
+	/*"gnc_h19": true,*/
+	/*"gnc_m00": true,*/
+	/*"gnc_w0m11": true,*/
+	"gn_hide_tab_dropdown": true,
+	"gn_overlay_scroll_bars": true,
+	"gn_sidebar_box": true,
+	"gn_title_bar": true,
+	/*"gnc_h19": true,*/
+	/*"gnc_m00": true,*/
+	/*"gnc_w0m11": true,*/
+	"gnwidg1": true,
+	"gnwidgo": true,
+	/*"gnc_h19": true,*/
+	/*"gnc_001": false,*/
+	/*"gnc_002": true,*/
+	/*"gnc_h20": true,*/
+	/*"gnc_m07": true,*/
+	/*"gnc_w4m12": true,*/
+	/*"gnc_h15": true,*/
+	/*"gnc_m07": true,*/
+	/*"gnc_w5m13": true,*/
 }

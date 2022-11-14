@@ -1,0 +1,52 @@
+<snippet>
+	<content><![CDATA[
+const ll N = 15000005;
+
+vll prime(N);
+
+void sieve()
+{
+	for(ll i = 2; i*i <= N; i++)
+	{
+		if(!prime[i])
+		{
+			for(ll j = i+i; j <= N; j += i)
+			{
+				prime[j] = i;
+			}
+		}
+	}
+
+	for(ll i = 2; i <= N; i++)
+	{
+		if(!prime[i])
+		{
+			prime[i] = i;
+		}
+	}
+}
+
+vll pf(ll n)
+{
+	vll v;
+	
+	while(n > 1)
+	{
+		ll p = prime[n];
+		
+		v.pb(p);
+		
+		while(n % p == 0)
+		{
+			n /= p;
+		}
+	}
+	
+	return v;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>PrimeFactorization2</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
