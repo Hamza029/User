@@ -1,110 +1,96 @@
 <snippet>
 	<content><![CDATA[
-const int N = 1e6 + 9;
+const ll N = 1e6 + 5;
 ll modInverse(ll a, ll m) // calculates inverse modulo
 {
-    ll m0 = m;
-    ll y = 0, x = 1;
-
+    ll m0 = m, y = 0, x = 1;
     if (m == 1)
-    {
         return 0;
-    }
-
     while (a > 1)
     {
         ll q = a / m;
         ll t = m;
-
         m = a % m, a = t;
         t = y;
-
         y = x - q * y;
         x = t;
     }
-
     if (x < 0)
-    {
         x += m0;
-    }
-
     return x;
 }
 
-ll p_pow[N]; // p_pow[i] = p^i % m
-ll modIn[N]; // inverse modulo for p_pow[]
-ll hash_val[N]; // prefix sum of hash values
-const ll p = 31; // base
-const ll m = 1e9 + 7; // mod
+ll p_pow[2][N];
+ll modIn[2][N];
+const ll p[2] = {29, 31};
+const ll m[2]={715225741, 1000000007};
 
-void compute_hash(string const& s) // precomputes hash_val
+void powCalc()
 {
-    hash_val[0] = s[0] - 'a' + 1;
-    for (ll i = 1; i < (ll)s.size(); i++)
+    p_pow[0][0] = 1;
+    p_pow[1][0] = 1;
+    for (ll i = 1; i < N; i++)
     {
-        hash_val[i] = (hash_val[i - 1] + (s[i] - 'a' + 1) * p_pow[i]) % m;
+        p_pow[0][i] = (p[0] * p_pow[0][i - 1]) % m[0];
+        p_pow[1][i] = (p[1] * p_pow[1][i - 1]) % m[1];
+        modIn[0][i]  =  modInverse(p_pow[0][i], m[0]);
+        modIn[1][i]  =  modInverse(p_pow[1][i], m[1]);
     }
 }
 
-ll get_hash(string const& s) // returns hash value of a string s
+struct Hash
 {
-    ll x = s[0] - 'a' + 1;
-    for (ll i = 1; i < (ll)s.size(); i++)
+    ll n;
+    string s;
+    vector<ll> h, bh;
+    
+    Hash() {}
+    Hash(string s, ll id) : s(s) {
+        n = (ll)s.size();
+        h.resize(n);
+        bh.resize(n);
+        
+        h[0] = s[0] - 'a' + 1;
+        for (ll i = 1; i < n; i++)
+        {
+            h[i] = (h[i-1] + (s[i] - 'a' + 1) * p_pow[id][i]) % m[id];
+        }
+        
+        bh[n-1] = s[n-1] - 'a' + 1;
+        for (ll i = n-2, j = 1; i >= 0; i--, j++)
+        {
+            bh[i] = (bh[i + 1] + (s[i] - 'a' + 1) * p_pow[id][j]) % m[id];
+        }
+    }
+    
+    ll query(ll l, ll r, ll id)
     {
-        x = (x + (s[i] - 'a' + 1) * p_pow[i]) % m;
+        if (r < l)
+            return 0;
+        if (l == 0)
+            return h[r];
+        else
+            return ((((h[r] - h[l-1]) + m[id]) % m[id]) * modIn[id][l]) % m[id];
+    }
+    
+    ll merge(ll l1, ll r1, ll l2, ll r2, ll id) 
+    {
+        return (query(l1, r1, id) + query(l2, r2, id) * p_pow[id][r1 - l1 + 1]) % m[id];
+    }
+    
+    ll back_query(ll l, ll r, ll id)
+    {
+        if (r < l)
+            return 0;
+        if (r == n-1)
+            return bh[l];
+        else
+            return ((((bh[l] - bh[r + 1]) + m[id]) % m[id]) * modIn[id][n-1-r]) % m[id];
+    }
+};
 
-    }
-    return x;
-}
-
-void powCalc(ll n) // precomputes p_pow[] and hash_val[]
-{
-    p_pow[0] = 1;
-    for (ll i = 1; i <= n; i++)
-    {
-        p_pow[i] = (p * p_pow[i - 1]) % m;
-        modIn[i]  =  modInverse(p_pow[i], m);
-    }
-}
-
-ll query_hash(ll l, ll r) // calculates hash value of substring in range [l, r]
-{
-    if (r < l)
-    {
-        return 0;
-    }
-    if (l == 0)
-    {
-        return hash_val[r];
-    }
-    else
-    {
-        return ((((hash_val[r] - hash_val[l - 1]) + m) % m) * modIn[l]) % m;
-    }
-}
-
-// if two substrings of range [l1, r1], [l2, r2] are merged it returns hash value of the merged string
-ll mergeHash(ll l1, ll r1, ll l2, ll r2) 
-{
-    return (query_hash(l1, r1) + query_hash(l2, r2) * p_pow[r1 - l1 + 1]) % m;
-}
-
-void test() // for testing the template
-{
-    ll i, n, t, k, j, x = 0, y = 0;
-    string str;
-    cin >> str;
-    n = (ll)str.size();
-    powCalc(n);
-    compute_hash(str);
-    for (i = 0; i <= n; i++)
-    {
-        cout << i << " " << hash_val[i] << endl;
-    }
-    cout << query_hash(2, 3) << endl;
-    cout << query_hash(0, 1) << endl;
-    return;
-}
+// Hash h0(s, 0);
+// Hash h1(s, 1);
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
 	<tabTrigger>Hashing</tabTrigger>
