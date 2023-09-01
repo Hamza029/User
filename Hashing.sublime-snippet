@@ -1,30 +1,38 @@
 <snippet>
 	<content><![CDATA[
 const ll N = 1e6 + 5;
-ll modInverse(ll a, ll m) // calculates inverse modulo
+
+ll powerMod(ll a, ll n, ll p)
 {
-    ll m0 = m, y = 0, x = 1;
-    if (m == 1)
-        return 0;
-    while (a > 1)
+    // a=base, n=power, p=some prime number
+    ll ret=1;
+    while(n)
     {
-        ll q = a / m;
-        ll t = m;
-        m = a % m, a = t;
-        t = y;
-        y = x - q * y;
-        x = t;
+        if(n%2!=0)
+        {
+            ret=(ret*a)%p;
+            n--;
+        }
+        else
+        {
+            a=(a*a)%p;
+            n/=2;
+        }
     }
-    if (x < 0)
-        x += m0;
-    return x;
+    return ret;
 }
 
+ll modInverse(ll x, ll y, ll p)
+{
+    // (x / y) % p
+    return (x*powerMod(y,p-2,p))%p;
+}
+ 
 ll p_pow[2][N];
 ll modIn[2][N];
 const ll p[2] = {29, 31};
 const ll m[2]={715225741, 1000000007};
-
+ 
 void powCalc()
 {
     p_pow[0][0] = 1;
@@ -33,11 +41,11 @@ void powCalc()
     {
         p_pow[0][i] = (p[0] * p_pow[0][i - 1]) % m[0];
         p_pow[1][i] = (p[1] * p_pow[1][i - 1]) % m[1];
-        modIn[0][i]  =  modInverse(p_pow[0][i], m[0]);
-        modIn[1][i]  =  modInverse(p_pow[1][i], m[1]);
+        modIn[0][i]  =  modInverse(1, p_pow[0][i], m[0]);
+        modIn[1][i]  =  modInverse(1, p_pow[1][i], m[1]);
     }
 }
-
+ 
 struct Hash
 {
     ll n;
@@ -88,7 +96,7 @@ struct Hash
             return ((((bh[l] - bh[r + 1]) + m[id]) % m[id]) * modIn[id][n-1-r]) % m[id];
     }
 };
-
+ 
 // Hash h0(s, 0);
 // Hash h1(s, 1);
 ]]></content>
