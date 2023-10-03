@@ -1,40 +1,101 @@
 <snippet>
 	<content><![CDATA[
 //Trie Tree
-struct Node
+
+class Trie
 {
-    bool endmark=0;
-    map<char,Node*> child;
+private:
+    struct Node
+    {
+        int cnt = 0;
+        Node* child[26];
+    };
+    Node *root;
+
+public:
+    Trie() : root(new Node()) {}
+    
+    ll getId(char c)
+    {
+        return c-'a';
+    }
+
+    void insert(const string& s)
+    {
+        Node* curr=root;
+        for(char x: s)
+        {
+            ll y=getId(x);
+            if(curr->child[y]==NULL)
+            {
+                curr->child[y]=new Node();
+            }
+            curr=curr->child[y];
+            curr->cnt++;
+        }
+    }
+
+    int search(const string& s)
+    {
+        Node* curr=root;
+        for(char x: s)
+        {
+            ll y=getId(x);
+            if(curr->child[y]==NULL)
+            {
+                return 0;
+            }
+            curr=curr->child[y];
+        }
+        return curr->cnt;
+    }
+    
+    void remove(const string& s)
+    {
+        Node* curr=root;
+     
+        for(char x: s)
+        {
+            ll y=getId(x);
+            curr=curr->child[y];
+            curr->cnt--;
+        }
+    }
+    
+    void clear() { __clear(root); }
+
+    void __clear(Node* curr)
+    {
+        for(int i=0; i<26; i++)
+        {
+            if(curr->child[i] != NULL)
+            {
+                __clear(curr->child[i]);
+            }
+        }
+        delete(curr);
+    }
 };
 
-Node* root = new Node();
-
-void Insert(string s)
+void test()
 {
-    Node* curr=root;
-    for(char x: s)
+    ll n; cin>>n;
+    
+    Trie tr = Trie();
+    
+    for(ll i=0; i<n; i++)
     {
-        if(curr->child[x]==NULL)
-        {
-            curr->child[x]=new Node();
-        }
-        curr=curr->child[x];
+        string s; cin>>s;
+        tr.insert(s);
     }
-    curr->endmark=1;
-}
-
-bool Search(string s)
-{
-    Node* curr=root;
-    for(char x: s)
+    ll q; cin>>q;
+    while(q--)
     {
-        if(curr->child[x]==NULL)
-        {
-            return 0;
-        }
-        curr=curr->child[x];
+        string s; cin>>s;
+        cout<<tr.search(s)<<endl;
     }
-    return curr->endmark;
+    
+    tr.clear();
 }
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->

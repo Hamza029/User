@@ -1,15 +1,16 @@
 <snippet>
 	<content><![CDATA[
-vector<ll> graph[$1];
-vector<ll> transposedGraph[$1];
-vector<ll> components[$1];
-bool vis[$1];
+const ll N = 100005;
+ 
+vector<ll> graph[N], tgraph[N], components[N], sgraph[N];
+bool vis[N];
+ll sccMark[N];
 stack<ll> order;
-ll nodes,edges;
-
+ll nodes, edges, sccNum;
+ 
 void dfs(ll u)
 {
-    vis[u]=1;
+    vis[u] = 1;
     for(auto v: graph[u])
     {
         if(!vis[v])
@@ -19,30 +20,34 @@ void dfs(ll u)
     }
     order.push(u);
 }
-
-void dfs2(ll u, ll mark)
+ 
+void tdfs(ll u, ll mark)
 {
     components[mark].push_back(u);
-    vis[u]=1;
-    for(auto v: transposedGraph[u])
+    sccMark[u] = mark;
+    vis[u] = 1;
+    for(auto v: tgraph[u])
     {
         if(!vis[v])
         {
-            dfs2(v,mark);
+            tdfs(v, mark);
         }
     }
 }
-
+ 
 void findSCC()
 {
     cin>>nodes>>edges;
+ 
     for(ll i=0; i<edges; i++)
     {
         ll u,v; cin>>u>>v;
         graph[u].push_back(v);
-        transposedGraph[v].push_back(u);
+        tgraph[v].push_back(u);
     }
+ 
     memset(vis,0,sizeof(vis));
+ 
     for(ll i=1; i<=nodes; i++)
     {
         if(!vis[i])
@@ -50,27 +55,43 @@ void findSCC()
             dfs(i);
         }
     }
-    memset(vis,0,sizeof(vis));
-    ll sccNum=0;
+ 
+    memset(vis, 0, sizeof(vis));
+    memset(sccMark, 0, sizeof(sccMark));
+ 
+    sccNum = 0;
+ 
     while(!order.empty())
     {
-        ll top=order.top();
+        ll top = order.top();
         order.pop();
         if(!vis[top])
         {
-            dfs2(top,sccNum);
             sccNum++;
+            tdfs(top, sccNum);
         }
     }
-    cout<<"Number of SCC: "<<sccNum<<endl;
-    // all the SCCs will be stored in components[] vector
-    for(ll i=0; i<sccNum; i++)
+}
+ 
+void build_scc_tree()
+{
+    for(ll i=1; i<=sccNum; i++)
     {
-        for(auto x: components[i])
+        set<ll> curr;
+        for(auto u: components[i])
         {
-            cout<<x<<" ";
+            for(auto v: graph[u])
+            {
+                if(sccMark[v] != sccMark[u])
+                {
+                    curr.insert(sccMark[v]);
+                }
+            }
         }
-        cout<<endl;
+        for(auto u: curr)
+        {
+            sgraph[i].push_back(u);
+        }
     }
 }
 ]]></content>
